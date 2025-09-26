@@ -9,6 +9,7 @@ import Tramites from './components/Interfaces/Tramites';
 import Login from './components/Auth/login';
 import Usuarios from './components/Interfaces/Usuarios';
 import DepartamentoGerente from './components/Interfaces/DepartamentoGerente';
+import Departamentos from './components/Interfaces/Departamentos';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import PublicRoute from './components/Auth/PublicRoute';
 
@@ -27,6 +28,10 @@ function AppContent() {
                 <Route
                     path="/usuarios"
                     element={<ProtectedRoute roles={[1]}><Usuarios /></ProtectedRoute>}
+                />
+                <Route
+                    path="/departamentos"
+                    element={<ProtectedRoute roles={[1]}><Departamentos /></ProtectedRoute>}
                 />
 
                 {/* Solo para Jefe */}

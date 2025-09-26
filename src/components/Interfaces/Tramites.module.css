@@ -31,7 +31,7 @@
 
 /* Encabezado de tabla */
 .thead {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: #466FA6;
   color: white;
 }
 
@@ -72,6 +72,21 @@
   font-weight: 400;
 }
 
+/* Botón Nueva Solicitud */
+.nuevaSolicitudButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Botón Ver */
 .verButton {
   background-color: #fbbf24;
@@ -80,6 +95,7 @@
   padding: 8px 12px;
   cursor: pointer;
   font-size: 16px;
+  color: white;
 }
 
 /* Estados */

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from './Tramites.module.css';
 
 const Tramites = () => {
@@ -63,6 +63,9 @@ const Tramites = () => {
     return (
         <div className={styles.tableContainer}>
         <h1 className={styles.title}>Gestión de Trámites</h1>
+        <button className={styles.nuevaSolicitudButton}>
+            <FontAwesomeIcon icon={faPlus} /> Nueva Solicitud
+        </button>
         
         <table className={styles.table}>
             <thead className={styles.thead}>

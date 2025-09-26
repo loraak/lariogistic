@@ -5,11 +5,13 @@ import { faPenToSquare, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const DepartamentoGerente = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [datos, setDatos] = useState([
-        { id: 1, nombre: "Ana", email: "ana@gmail.com", telefono: 444, estado: "Inactivo" },
-        { id: 2, nombre: "Brisa", email: "bri@gmail.com", telefono: 555, estado: "Activo" },
-        { id: 3, nombre: "Irving", email: "irving@gmail.com", telefono: 666, estado: "Activo" },
-    ]);
+    const [selectedEmpleado, setSelectedEmpleado] = useState('');
+    
+    const datos = [
+        { id: 1, nombre: "Ana", email: "ana@gmail.com", telefono: 444, direccion: "Av. Ferrocarril", estado: "Inactivo" },
+        { id: 2, nombre: "Brisa", email: "bri@gmail.com", telefono: 555, direccion: "Av. Ferrocarril", estado: "Activo" },
+        { id: 3, nombre: "Irving", email: "irving@gmail.com", telefono: 666, direccion: "Av. Ferrocarril", estado: "Activo" },
+    ];
     
     const getEstadoClassName = (estado) => {
         switch (estado.toLowerCase()) {
@@ -22,18 +24,28 @@ const DepartamentoGerente = () => {
         }
     };
 
+    const handleAddEmpleado = () => {
+        if (selectedEmpleado) {
+            console.log('Empleado seleccionado:', selectedEmpleado);
+            // Aquí puedes agregar la lógica para añadir el empleado
+        }
+        setIsModalOpen(false);
+        setSelectedEmpleado('');
+    };
+
     return(
         <div>
             <h2 className={styles.title}>Departamento del gerente</h2>
             <button onClick={() => setIsModalOpen(true)} className={styles.nuevoEmpleado}>
-                <FontAwesomeIcon icon={faUser} />Nuevo Empleado</button>
+                <FontAwesomeIcon icon={faUser} />Nuevo Empleado
+            </button>
             <table className={styles.table}>
                 <thead className={styles.thead}>
                     <tr>
-                        <th className={styles.th}>ID</th>
                         <th className={styles.th}>Nombre</th>
                         <th className={styles.th}>Email</th>
                         <th className={styles.th}>Teléfono</th>
+                        <th className={styles.th}>Dirección</th>
                         <th className={styles.th}>Estado</th>
                         <th className={styles.th}></th>
                     </tr>
@@ -41,10 +53,10 @@ const DepartamentoGerente = () => {
                 <tbody className={styles.tbody}>
                     {datos.map((item) => (
                         <tr key={item.id} className={styles.tr}>
-                            <td className={styles.td}>{item.id}</td>
                             <td className={styles.td}>{item.nombre}</td>
                             <td className={styles.td}>{item.email}</td>
                             <td className={styles.td}>{item.telefono}</td>
+                            <td className={styles.td}>{item.direccion}</td>
                             <td className={styles.td}>
                                 <span className={`${styles.estadoBadge} ${getEstadoClassName(item.estado)}`}>
                                     {item.estado}
@@ -61,12 +73,27 @@ const DepartamentoGerente = () => {
             </table>
             <EditarSolicitud
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)} />
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setSelectedEmpleado('');
+                }}
+                datos={datos}
+                selectedEmpleado={selectedEmpleado}
+                setSelectedEmpleado={setSelectedEmpleado}
+                onAddEmpleado={handleAddEmpleado}
+            />
         </div>
     );
 }
 
-const EditarSolicitud = ({ isOpen, onClose,}) => {
+const EditarSolicitud = ({ 
+    isOpen, 
+    onClose, 
+    datos, 
+    selectedEmpleado, 
+    setSelectedEmpleado, 
+    onAddEmpleado 
+}) => {
     if (!isOpen) return null;
 
     const handleBackdropClick = (e) => {
@@ -79,7 +106,7 @@ const EditarSolicitud = ({ isOpen, onClose,}) => {
         <div className={styles.backdrop} onClick={handleBackdropClick}>
             <div className={styles.modal}>
                 <div className={styles.header}>
-                    <h2 className={styles.titleModal}>Nuevo Empleado</h2>
+                    <h2 className={styles.titleModal}>Añadir Empleado</h2>
                     <button
                         className={styles.closeButton}
                         onClick={onClose}
@@ -90,23 +117,27 @@ const EditarSolicitud = ({ isOpen, onClose,}) => {
                 </div>
                 <div className={styles.modalBody}>
                     <div className={styles.formGroup}>
-                        <label>Nombre Completo</label>
-                        <input type="text" className={styles.input} />
-                    </div>
-                    
-                    <div className={styles.formGroup}>
-                        <label>Email</label>
-                        <input type="email" className={styles.input} accept=".pdf" />
-                    </div>
-                    
-                    <div className={styles.formGroup}>
-                        <label>Teléfono</label>
-                        <input type="phone" className={styles.input} />
+                        <label htmlFor="empleado-select">Seleccionar Empleado sin departamento:</label>
+                        <select
+                            id="empleado-select"
+                            className={styles.select}
+                            value={selectedEmpleado}
+                            onChange={(e) => setSelectedEmpleado(e.target.value)}
+                        >
+                            <option value="">-- Selecciona un empleado --</option>
+                            {datos.map((empleado) => (
+                                <option key={empleado.id} value={empleado.id}>
+                                    {empleado.nombre} - {empleado.email}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className={styles.footer}>
                     <button
                         className={styles.buttonModal}
+                        onClick={onAddEmpleado}
+                        disabled={!selectedEmpleado}
                     >
                         Aceptar
                     </button>

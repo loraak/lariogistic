@@ -213,6 +213,26 @@
   gap: 12px;
 }
 
+.select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.select:hover {
+    border-color: #007bff;
+}
+
 .buttonModal {
   background-color: #3b82f6;
   color: white;

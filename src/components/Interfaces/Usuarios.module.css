@@ -307,6 +307,21 @@
     gap: 12px;
 }
 
+/* Botón Nuevo usuario */
+.nuevaSoliButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Botones del footer */
 .buttonModal {
     background-color: #3b82f6;

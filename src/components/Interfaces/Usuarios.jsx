@@ -1,11 +1,14 @@
 import { useState } from "react";
 import styles from "./Usuarios.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import AñadirUsuario from './AñadirUsuario';
 
 const Usuarios = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false); // Corregido: useState separado
     const [nuevoEstado, setNuevoEstado] = useState('');
     const [datos, setDatos] = useState([
         { 
@@ -80,9 +83,20 @@ const Usuarios = () => {
         }
     };
 
+    // Función para agregar nuevo usuario
+    const agregarUsuario = (nuevoUsuario) => {
+        const nuevoId = Math.max(...datos.map(u => u.id)) + 1;
+        setDatos(prevDatos => [...prevDatos, { ...nuevoUsuario, id: nuevoId }]);
+        setMostrarFormulario(false);
+    };
+
     return (
         <div className={styles.tablecontainer}>
             <h2 className={styles.title}>Gestión de Usuarios</h2>
+            <button className={styles.nuevaSoliButton} onClick={() => setMostrarFormulario(true)}>
+                <FontAwesomeIcon icon={faPlus} /> Nuevo Usuario
+            </button>
+            
             <table className={styles.table}>
                 <thead className={styles.thead}>
                     <tr>
@@ -123,6 +137,7 @@ const Usuarios = () => {
                 </tbody>
             </table>
 
+            {/* Modal para editar usuario */}
             <EditarUsuario
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -132,7 +147,14 @@ const Usuarios = () => {
                 setNuevoEstado={setNuevoEstado}
                 estadosDisponibles={estadosDisponibles}
                 onAceptar={actualizarEstado}
-            ></EditarUsuario>
+            />
+
+            {/* Componente para añadir nuevo usuario - Movido fuera del modal */}
+            <AñadirUsuario
+                mostrar={mostrarFormulario}
+                onCerrar={() => setMostrarFormulario(false)}
+                onAgregar={agregarUsuario}
+            />
         </div>
     );
 };

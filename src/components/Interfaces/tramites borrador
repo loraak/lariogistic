@@ -1,0 +1,170 @@
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPlus, faSync } from '@fortawesome/free-solid-svg-icons';
+import Solicitud from './Solicitud';
+import TramitesService from '../services/tramitesService';
+import styles from './Tramites.module.css';
+
+const Tramites = () => {
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [tramites, setTramites] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    // Cargar trámites al montar el componente
+    useEffect(() => {
+        cargarTramites();
+    }, []);
+
+    const cargarTramites = async () => {
+        setLoading(true);
+        setError('');
+        
+        try {
+            // Aquí deberías obtener el ID del usuario autenticado
+            const idUsuario = 1; // Temporal - esto debería venir del contexto de autenticación
+            
+            const response = await TramitesService.obtenerTramitesPorUsuario(idUsuario);
+            
+            if (response.success) {
+                setTramites(response.data);
+            }
+        } catch (error) {
+            console.error('Error al cargar trámites:', error);
+            setError('Error al cargar los trámites');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Manejar nuevo trámite creado
+    const handleTramiteCreado = (nuevoTramite) => {
+        // Agregar el nuevo trámite al inicio de la lista
+        setTramites(prev => [nuevoTramite, ...prev]);
+    };
+
+    const getEstadoClass = (estado) => {
+        switch (estado.toLowerCase()) {
+            case 'pendiente':
+                return styles.estadoPendiente;
+            case 'aprobado':
+                return styles.estadoAprobado;
+            case 'rechazado':
+                return styles.estadoRechazado;
+            case 'en revision':
+                return styles.estadoRevision;
+            default:
+                return styles.estadoPendiente;
+        }
+    };
+
+    const formatearFecha = (fecha) => {
+        const fechaObj = new Date(fecha);
+        return fechaObj.toLocaleDateString('es-MX', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
+    const handleVerDetalle = (tramite) => {
+        // Implementar lógica para mostrar detalles del trámite
+        console.log('Ver detalle del trámite:', tramite);
+        // Puedes abrir un modal con los detalles o navegar a otra página
+    };
+
+    return (
+        <div className={styles.tableContainer}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Gestión de Trámites</h1>
+                <div className={styles.headerButtons}>
+                    <button 
+                        className={styles.recargarButton}
+                        onClick={cargarTramites}
+                        disabled={loading}
+                        title="Recargar trámites"
+                    >
+                        <FontAwesomeIcon icon={faSync} spin={loading} />
+                    </button>
+                    <button 
+                        className={styles.nuevaSolicitudButton} 
+                        onClick={() => setMostrarFormulario(true)}
+                        disabled={loading}
+                    >
+                        <FontAwesomeIcon icon={faPlus} /> Nueva Solicitud
+                    </button>
+                </div>
+            </div>
+
+            {error && (
+                <div className={styles.errorMessage}>
+                    {error}
+                    <button onClick={cargarTramites} className={styles.retryButton}>
+                        Reintentar
+                    </button>
+                </div>
+            )}
+
+            {loading && tramites.length === 0 ? (
+                <div className={styles.loading}>
+                    <FontAwesomeIcon icon={faSync} spin /> Cargando trámites...
+                </div>
+            ) : (
+                <div className={styles.tableWrapper}>
+                    <table className={styles.table}>
+                        <thead className={styles.thead}>
+                            <tr>
+                                <th className={styles.th}>Trámite</th>
+                                <th className={styles.th}>Fecha de Solicitud</th>
+                                <th className={styles.th}>Estado</th>
+                                <th className={styles.th}>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody className={styles.tbody}>
+                            {tramites.length === 0 ? (
+                                <tr>
+                                    <td colSpan="4" className={styles.noData}>
+                                        No tienes trámites registrados
+                                    </td>
+                                </tr>
+                            ) : (
+                                tramites.map((tramite) => (
+                                    <tr key={tramite.idTramite} className={styles.tr}>
+                                        <td className={styles.td}>
+                                            {tramite.tipoTramite || 'Trámite General'}
+                                        </td>
+                                        <td className={styles.td}>
+                                            {formatearFecha(tramite.fechaSolicitud)}
+                                        </td>
+                                        <td className={styles.td}>
+                                            <span className={getEstadoClass(tramite.estado)}>
+                                                {tramite.estado.charAt(0).toUpperCase() + tramite.estado.slice(1)}
+                                            </span>
+                                        </td>
+                                        <td className={styles.td}>
+                                            <button 
+                                                className={styles.verButton}
+                                                onClick={() => handleVerDetalle(tramite)}
+                                                title="Ver detalles"
+                                            >
+                                                <FontAwesomeIcon icon={faEye} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
+            <Solicitud
+                mostrar={mostrarFormulario}
+                onCerrar={() => setMostrarFormulario(false)}
+                onTramiteCreado={handleTramiteCreado}
+            />
+        </div>
+    );
+};
+
+export default Tramites;

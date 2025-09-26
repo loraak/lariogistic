@@ -135,6 +135,257 @@
     box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }
 
+.openButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.openButton:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.openButton:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Backdrop del modal */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Contenedor principal del modal */
+.modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: slideIn 0.2s ease-out;
+}
+
+/* Header del modal */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e1e5e9;
+  background-color: #f8f9fa;
+}
+
+/* Título del modal */
+.titleModal {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* Botón de cerrar (X) */
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.closeButton:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Contenido del modal */
+.contentModal {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+  color: #374151;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Estilo para el contenido específico del ejemplo */
+.contentTitle {
+  color: #3b82f6;
+  margin-top: 0;
+}
+
+.tipBox {
+  background-color: #f0f9ff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+  margin-top: 16px;
+}
+
+/* Footer del modal */
+.footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e1e5e9;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Botones del footer */
+.buttonModal {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.buttonModal:hover {
+  background-color: #2563eb;
+}
+
+.buttonModal:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.cancelButton {
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #4b5563;
+}
+
+.cancelButton:focus {
+  outline: 2px solid #6b7280;
+  outline-offset: 2px;
+}
+
+/* Estilos para el formulario dentro del modal */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.select:hover {
+    border-color: #007bff;
+}
+
+/* Estilos para los botones del footer */
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.buttonSecondary {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buttonSecondary:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+.buttonModal {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonModal:hover {
+    background-color: #0056b3;
+}
+
+/* Mejorar el contenido del modal */
+.content {
+    padding: 20px 20px;
+    min-height: 120px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .tableContainer {

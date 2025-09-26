@@ -6,11 +6,10 @@ import Header from './components/Header/Header';
 import Tramites from './components/Interfaces/Tramites';
 import Login from './components/Auth/login';
 
-function App() {
+function AppContent() {
   return (
-    <Router>
       <div className="App">
-        {/* Header fijo */}
+        {/* Header fijo - Se muestra en todas las páginas */}
         <Header />
 
         {/* Definición de rutas */}
@@ -21,8 +20,15 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>
-    </Router>
   );
+}
+
+function App() { 
+  return (
+    <Router>
+      <AppContent /> 
+    </Router>
+  ); 
 }
 
 export default App;

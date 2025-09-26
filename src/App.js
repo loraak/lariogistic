@@ -1,10 +1,9 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import GestionSolicitudes from './components/Admin/GestionSolicitudes';
+import GestionSolicitudes from './components/Interfaces/GestionSolicitudes';
 import Home from './components/Home/Home'; 
 import Header from './components/Header/Header'; 
-import Tramites from './components/Header/Tramites';
+import Tramites from './components/Interfaces/Tramites';
 
 function App() {
   return (

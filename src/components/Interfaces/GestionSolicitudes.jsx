@@ -8,9 +8,9 @@ const GestionSolicitudes = () => {
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
     const [nuevoEstado, setNuevoEstado] = useState('');
     const [datos, setDatos] = useState([
-        { id: 1, tramite: "Solicitud de vacaciones", cliente: "Ana", fecha: "25-09-25", estado: "Aprobado" },
-        { id: 2, tramite: "Permiso de salida", cliente: "Irving", fecha: "25-09-25", estado: "Pendiente" },
-        { id: 3, tramite: "Firma de contrato", cliente: "Karol", fecha: "25-09-25", estado: "Rechazado" },
+        { tramite: "Solicitud de vacaciones", cliente: "Ana", fecha: "25-09-25", estado: "Aprobado" },
+        { tramite: "Permiso de salida", cliente: "Irving", fecha: "25-09-25", estado: "Pendiente" },
+        { tramite: "Firma de contrato", cliente: "Karol", fecha: "25-09-25", estado: "Rechazado" },
     ]);
 
     const estadosDisponibles = ['Pendiente', 'Aprobado', 'Rechazado'];
@@ -59,8 +59,7 @@ const GestionSolicitudes = () => {
             <table className={styles.table}>
                 <thead className={styles.thead}>
                     <tr>
-                        <th className={styles.th}>ID</th>
-                        <th className={styles.th}>tramite de solicitud</th>
+                        <th className={styles.th}>Tramite de solicitud</th>
                         <th className={styles.th}>Cliente</th>
                         <th className={styles.th}>Fecha</th>
                         <th className={styles.th}>Estado</th>
@@ -70,7 +69,6 @@ const GestionSolicitudes = () => {
                 <tbody className={styles.tbody}>
                     {datos.map((item) => (
                         <tr key={item.id} className={styles.tr}>
-                            <td className={styles.td}>{item.id}</td>
                             <td className={styles.td}>{item.tramite}</td>
                             <td className={styles.td}>{item.cliente}</td>
                             <td className={styles.td}>{item.fecha}</td>

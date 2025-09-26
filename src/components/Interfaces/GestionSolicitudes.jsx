@@ -8,9 +8,9 @@ const GestionSolicitudes = () => {
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
     const [nuevoEstado, setNuevoEstado] = useState('');
     const [datos, setDatos] = useState([
-        { tramite: "Solicitud de vacaciones", cliente: "Ana", fecha: "25-09-25", estado: "Aprobado" },
-        { tramite: "Permiso de salida", cliente: "Irving", fecha: "25-09-25", estado: "Pendiente" },
-        { tramite: "Firma de contrato", cliente: "Karol", fecha: "25-09-25", estado: "Rechazado" },
+        { tramite: "Solicitud de vacaciones", solicita: "Ana", fecha: "25-09-25", estado: "Aprobado" },
+        { tramite: "Permiso de salida", solicita: "Irving", fecha: "25-09-25", estado: "Pendiente" },
+        { tramite: "Firma de contrato", solicita: "Karol", fecha: "25-09-25", estado: "Rechazado" },
     ]);
 
     const estadosDisponibles = ['Pendiente', 'Aprobado', 'Rechazado'];
@@ -60,7 +60,7 @@ const GestionSolicitudes = () => {
                 <thead className={styles.thead}>
                     <tr>
                         <th className={styles.th}>Tramite de solicitud</th>
-                        <th className={styles.th}>Cliente</th>
+                        <th className={styles.th}>Solicita</th>
                         <th className={styles.th}>Fecha</th>
                         <th className={styles.th}>Estado</th>
                         <th className={styles.th}></th>
@@ -70,7 +70,7 @@ const GestionSolicitudes = () => {
                     {datos.map((item) => (
                         <tr key={item.id} className={styles.tr}>
                             <td className={styles.td}>{item.tramite}</td>
-                            <td className={styles.td}>{item.cliente}</td>
+                            <td className={styles.td}>{item.solicita}</td>
                             <td className={styles.td}>{item.fecha}</td>
                             <td className={styles.td}>
                                 <span className={`${styles.estadoBadge} ${getEstadoClassName(item.estado)}`}>
@@ -140,7 +140,7 @@ const EditarSolicitud = ({ isOpen,
                             Solicitud: <strong>{solicitud.tramite}</strong>
                         </label>
                         <label className={styles.label}>
-                            Cliente: <strong>{solicitud.cliente}</strong>
+                            Solicita: <strong>{solicitud.solicita}</strong>
                         </label>
                         <label className={styles.label} htmlFor="estado-select">
                             Nuevo Estado:

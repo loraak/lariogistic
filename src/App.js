@@ -17,15 +17,33 @@ function AppContent() {
         <div className="App">
             <Header />
             <Routes>
-                {/* Rutas Públicas */}
+                {/* --- Ruta Pública --- */}
                 <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
 
-                {/* Rutas Protegidas */}
+                {/* Accesible para todos los usuarios autenticados */}
                 <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-                <Route path="/gestiones" element={<ProtectedRoute><GestionSolicitudes /></ProtectedRoute>} />
-                <Route path="/tramites" element={<ProtectedRoute><Tramites /></ProtectedRoute>} />
-                <Route path="/usuarios" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
-                <Route path="/depgerente" element={<ProtectedRoute><DepartamentoGerente /></ProtectedRoute>} />
+
+                {/* Solo para Admin */}
+                <Route
+                    path="/usuarios"
+                    element={<ProtectedRoute roles={[1]}><Usuarios /></ProtectedRoute>}
+                />
+
+                {/* Solo para Jefe */}
+                <Route
+                    path="/gestiones"
+                    element={<ProtectedRoute roles={[2]}><GestionSolicitudes /></ProtectedRoute>} // <-- Cambio aquí
+                />
+                <Route
+                    path="/depgerente"
+                    element={<ProtectedRoute roles={[2]}><DepartamentoGerente /></ProtectedRoute>} // <-- Cambio aquí
+                />
+
+                {/* Solo para Usuario normal */}
+                <Route
+                    path="/tramites"
+                    element={<ProtectedRoute roles={[3]}><Tramites /></ProtectedRoute>} 
+                />
             </Routes>
         </div>
     );

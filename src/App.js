@@ -4,6 +4,7 @@ import GestionSolicitudes from './components/Interfaces/GestionSolicitudes';
 import Home from './components/Home/Home'; 
 import Header from './components/Header/Header'; 
 import Tramites from './components/Interfaces/Tramites';
+import Login from './components/Auth/login';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/gestiones" element={<GestionSolicitudes />} />
           <Route path="/tramites" element={<Tramites />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

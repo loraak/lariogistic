@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./GestionSolicitudes.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';

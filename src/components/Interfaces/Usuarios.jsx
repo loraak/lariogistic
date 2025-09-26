@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "./Usuarios.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
-import AñadirUsuario from './AñadirUsuario';
+import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
+import AniadirUsuario from './AñadirUsuario';
 import api from "../../services/api";
-
-// IMPORTAMOS EL NUEVO COMPONENTE
 import EditarUsuario from "./EditarUsuario"; 
 
 const Usuarios = () => {
@@ -25,21 +23,39 @@ const Usuarios = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await api.get('/usuarios');
-            const usuariosTransformados = response.data.data.map(usuario => ({
+            
+            // Obtener usuarios y departamentos en paralelo
+            const [usuariosResponse, departamentosResponse] = await Promise.all([
+                api.get('/usuarios'),
+                api.get('/departamentos')
+            ]);
+
+            // Crear un mapa de departamentos para búsqueda rápida
+            const departamentosMap = {};
+            if (departamentosResponse.data.success && departamentosResponse.data.data) {
+                departamentosResponse.data.data.forEach(dept => {
+                    departamentosMap[dept.idDepartamento] = dept.nombre;
+                });
+            }
+
+            // Transformar usuarios con información de departamento
+            const usuariosTransformados = usuariosResponse.data.data.map(usuario => ({
                 id: usuario.idUsuario,
                 nombre: usuario.nombre,
                 email: usuario.email,
                 telefono: usuario.telefono || 'No especificado',
                 direccion: usuario.direccion || 'No especificada',
                 rol: obtenerNombreRol(usuario.idRol),
-                departamento: 'No especificado',
+                departamento: usuario.idDepartamento ? 
+                    (departamentosMap[usuario.idDepartamento] || 'Departamento no encontrado') : 
+                    'Sin departamento',
                 estado: usuario.estado
             }));
+            
             setDatos(usuariosTransformados);
         } catch (err) {
-            console.error('Error al obtener usuarios:', err);
-            setError(err.response?.data?.error || 'Ocurrió un error al cargar los usuarios');
+            console.error('Error al obtener datos:', err);
+            setError(err.response?.data?.error || 'Ocurrió un error al cargar los datos');
         } finally {
             setLoading(false);
         }
@@ -57,18 +73,6 @@ const Usuarios = () => {
     const cerrarModal = () => {
         setIsModalOpen(false);
         setUsuarioSeleccionado(null);
-    };
-
-    const eliminarUsuario = async (usuarioId) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-            try {
-                await api.delete(`/usuarios/${usuarioId}`);
-                setDatos(prevDatos => prevDatos.filter(item => item.id !== usuarioId));
-            } catch (err) {
-                console.error('Error al eliminar usuario:', err);
-                setError(err.response?.data?.error || 'No se pudo eliminar el usuario');
-            }
-        }
     };
     
     const getEstadoClassName = (estado) => {
@@ -99,12 +103,6 @@ const Usuarios = () => {
             <div className={styles.actionsContainer}>
                 <button className={styles.actionButton} onClick={() => setMostrarFormulario(true)}>
                     <FontAwesomeIcon icon={faPlus} /> Nuevo Usuario
-                </button>
-                <button
-                    className={`${styles.actionButton} ${styles.secondary}`}
-                    onClick={obtenerUsuarios}
-                >
-                    <FontAwesomeIcon icon={faPenToSquare} /> Refrescar
                 </button>
             </div>
             
@@ -139,12 +137,6 @@ const Usuarios = () => {
                                 <button onClick={() => abrirModal(item)} className={styles.editButton}>
                                     <FontAwesomeIcon icon={faPenToSquare} />
                                 </button>
-                                <button
-                                    className={styles.deleteButton}
-                                    onClick={() => eliminarUsuario(item.id)}
-                                >
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
                             </td>
                         </tr>
                     ))}
@@ -164,7 +156,7 @@ const Usuarios = () => {
                 onUsuarioActualizado={obtenerUsuarios}
             />
 
-            <AñadirUsuario
+            <AniadirUsuario
                 mostrar={mostrarFormulario}
                 onCerrar={() => setMostrarFormulario(false)}
                 onUsuarioCreado={obtenerUsuarios}

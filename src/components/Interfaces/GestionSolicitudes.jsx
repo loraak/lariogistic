@@ -70,7 +70,7 @@ const GestionSolicitudes = () => {
                     {datos.map((item) => (
                         <tr key={item.id} className={styles.tr}>
                             <td className={styles.td}>{item.tramite}</td>
-                            <td className={styles.td}>{item.solicita}</td>
+                            <td className={styles.td}>{item.solicitante}</td>
                             <td className={styles.td}>{item.fecha}</td>
                             <td className={styles.td}>
                                 <span className={`${styles.estadoBadge} ${getEstadoClassName(item.estado)}`}>

@@ -16,16 +16,16 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
-    
+
         const result = await login(email, password);
-        
+
         if (result.success) {
             console.log('Login exitoso:', result.data);
             window.location.href = '/dashboard';
         } else {
             setError(result.error);
         }
-        
+
         setIsLoading(false);
     };
 

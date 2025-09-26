@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./GestionSolicitudes.module.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const GestionSolicitudes = () => {
     const datos = [
@@ -15,41 +17,48 @@ const GestionSolicitudes = () => {
             case 'pendiente':
                 return styles.estadoPendiente;
             case 'cancelado':
-                return styles.estadoCancelado;
+                return styles.estadoRechazado;
             default:
                 return '';
         }
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.tablecontainer}>
             <h2 className={styles.title}>Gestión de solicitudes</h2>
-            <div className={styles.tableContainer}>
                 <table className={styles.table}>
-                    <thead>
+                    <thead className={styles.thead}>
                         <tr>
-                            <th className={styles.tableHeader}>ID</th>
-                            <th className={styles.tableHeader}>Tipo de solicitud</th>
-                            <th className={styles.tableHeader}>Cliente</th>
-                            <th className={styles.tableHeader}>Estado</th>
+                            <th className={styles.th}>ID</th>
+                            <th className={styles.th}>Tipo de solicitud</th>
+                            <th className={styles.th}>Cliente</th>
+                            <th className={styles.th}>Estado</th>
+                            <th className={styles.th}></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className={styles.tbody}>
                         {datos.map((item) => (
-                            <tr key={item.id} className={styles.tableRow}>
-                                <td className={styles.tableCell}>{item.id}</td>
-                                <td className={styles.tableCell}>{item.tipo}</td>
-                                <td className={styles.tableCell}>{item.cliente}</td>
-                                <td className={styles.tableCell}>
+                            <tr key={item.id} className={styles.tr}>
+                                <td className={styles.td}>{item.id}</td>
+                                <td className={styles.td}>{item.tipo}</td>
+                                <td className={styles.td}>{item.cliente}</td>
+                                <td className={styles.td}>
                                     <span className={`${styles.estadoBadge} ${getEstadoClassName(item.estado)}`}>
                                         {item.estado}
                                     </span>
+                                </td>
+                                <td className={styles.td}>
+                                    <button className={styles.editButton}>
+                                    <FontAwesomeIcon icon={faPenToSquare} />
+                                    </button>
+                                    <button className={styles.deleteButton}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>
         </div>
     );
 };

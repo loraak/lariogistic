@@ -1,7 +1,8 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import styles from './DepartamentoGerente.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faUser } from '@fortawesome/free-solid-svg-icons';
+import api from '../../services/api';
 
 const DepartamentoGerente = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,22 @@ const DepartamentoGerente = () => {
         { id: 2, nombre: "Brisa", email: "bri@gmail.com", telefono: 555, direccion: "Av. Ferrocarril", estado: "Activo" },
         { id: 3, nombre: "Irving", email: "irving@gmail.com", telefono: 666, direccion: "Av. Ferrocarril", estado: "Activo" },
     ];
-    
+    /*
+    useEffect(() => {
+        getDepartamentos();
+    }, []);
+        // Haz una llamada API
+const getDepartamentos = async () => {
+  try {
+    const { data } = await api.get('/departamentos/'); // GET http://localhost:3000/api/departamentos
+    console.log('Departamentos:', data);
+    return data;
+  } catch (err) {
+    console.error('Error obteniendo departamentos:', err);
+    throw err;
+  }
+};*/
+
     const getEstadoClassName = (estado) => {
         switch (estado.toLowerCase()) {
             case 'activo':

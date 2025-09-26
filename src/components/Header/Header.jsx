@@ -33,7 +33,10 @@ const Header = () => {
 
                         {/* Link solo para Admin (rol 1) */}
                         {user.idRol === 1 && (
+                          <>
                             <Link to="/usuarios" className={styles.link}>Usuarios</Link>
+                            <Link to="/departamentos" className={styles.link}>Departamentos</Link>
+                          </>
                         )}
                         
                         <button onClick={logout} className={styles.logoutButton}>

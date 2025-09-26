@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import { useAuth } from '../hooks/useAuth';
 import styles from './login.module.css';
+import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 
 const Login = () => {
     const { login } = useAuth();
@@ -16,17 +17,19 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
-
-        const result = await login(email, password);
-
-        if (result.success) {
-            console.log('Login exitoso:', result.data);
-            window.location.href = '/dashboard';
-        } else {
-            setError(result.error);
+    
+        try {
+            const response = await api.post('/auth/login', { email, password });
+            const loginData = response.data.data;
+            console.log('Bien', loginData);
+            login(loginData);
+        }catch (err) {
+            console.error('Error de conexión:', err);
+            const errorMessage = err.response?.data?.message || 'Error de conexión. Inténtalo de nuevo.';
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
     };
 
     const togglePassword = () => {
@@ -35,11 +38,13 @@ const Login = () => {
 
     const handleGoogleLogin = () => {
         console.log('Google login clicked');
+        // Aquí va tu lógica de Google OAuth
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
+                {/* Logo/Brand */}
                 <div className={styles.header}>
                     <h2 className={styles.title}>Bienvenido</h2>
                     <p className={styles.subtitle}>Inicia sesión en tu cuenta</p>
@@ -72,7 +77,6 @@ const Login = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     className={styles.input}
                                     placeholder="usuario@lariogistic.com"
-                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
@@ -94,13 +98,11 @@ const Login = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className={`${styles.input} ${styles.passwordInput}`}
                                     placeholder="••••••••"
-                                    disabled={isLoading}
                                 />
                                 <button
                                     type="button"
                                     onClick={togglePassword}
                                     className={styles.passwordToggle}
-                                    disabled={isLoading}
                                 >
                                     <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                                 </button>
@@ -136,7 +138,6 @@ const Login = () => {
                         type="button"
                         onClick={handleGoogleLogin}
                         className={styles.googleButton}
-                        disabled={isLoading}
                     >
                         <svg className={styles.googleIcon} viewBox="0 0 24 24">
                             <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

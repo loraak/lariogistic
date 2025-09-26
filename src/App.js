@@ -5,22 +5,30 @@ import Home from './components/Home/Home';
 import Header from './components/Header/Header'; 
 import Tramites from './components/Interfaces/Tramites';
 
-function App() {
+function AppContent() {
   return (
-    <Router>
       <div className="App">
-        {/* Header fijo */}
+        {/* Header fijo - Se muestra en todas las páginas */}
         <Header />
 
-        {/* Definición de rutas */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/gestiones" element={<GestionSolicitudes />} />
-          <Route path="/tramites" element={<Tramites />} />
-        </Routes>
+        {/* Contenedor principal para el contenido */}
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/gestiones" element={<GestionSolicitudes />} />
+            <Route path="/tramites" element={<Tramites />} />
+          </Routes>
+        </main>
       </div>
-    </Router>
   );
+}
+
+function App() { 
+  return (
+    <Router>
+      <AppContent /> 
+    </Router>
+  ); 
 }
 
 export default App;

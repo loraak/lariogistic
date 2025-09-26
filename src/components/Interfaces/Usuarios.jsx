@@ -8,7 +8,7 @@ import AñadirUsuario from './AñadirUsuario';
 const Usuarios = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false); // Corregido: useState separado
+    const [mostrarFormulario, setMostrarFormulario] = useState(false); 
     const [nuevoEstado, setNuevoEstado] = useState('');
     const [datos, setDatos] = useState([
         { 

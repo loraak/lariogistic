@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import TramitesService from '../services/tramitesService';
 import styles from './Solicitud.module.css';
 
 const Solicitud = ({ mostrar, onCerrar, onTramiteCreado }) => {
-    const [formData, setFormData] = useState({
+ const [formData, setFormData] = useState({
         tipoSolicitud: '',
         fechaSolicitada: '',
         descripcion: '',
@@ -215,3 +214,4 @@ const Solicitud = ({ mostrar, onCerrar, onTramiteCreado }) => {
 };
 
 export default Solicitud;
+*/

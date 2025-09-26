@@ -5,6 +5,7 @@ import Home from './components/Home/Home';
 import Header from './components/Header/Header'; 
 import Tramites from './components/Interfaces/Tramites';
 import Login from './components/Auth/login';
+import Usuarios from './components/Interfaces/Usuarios';
 import DepartamentoGerente from './components/Interfaces/DepartamentoGerente';
 
 function AppContent() {
@@ -19,6 +20,7 @@ function AppContent() {
           <Route path="/gestiones" element={<GestionSolicitudes />} />
           <Route path="/tramites" element={<Tramites />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/depgerente" element={<DepartamentoGerente />} />
         </Routes>
       </div>

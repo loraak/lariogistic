@@ -1,0 +1,427 @@
+/* Contenedor principal */
+.tablecontainer {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+}
+
+/* Título */
+.title {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* Tabla principal */
+.table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+/* Encabezado de tabla */
+.thead {
+    background: #466FA6;
+    color: white;
+}
+
+.th {
+    padding: 18px 24px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Cuerpo de tabla */
+.tbody {
+    background-color: white;
+}
+
+.tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: all 0.2s ease-in-out;
+}
+
+.tr:hover {
+    background-color: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tr:last-child {
+    border-bottom: none;
+}
+
+.td {
+    padding: 16px 24px;
+    font-size: 15px;
+    color: #4a5568;
+    font-weight: 400;
+}
+
+/* Badges de estado - adaptados al estilo del primer archivo */
+.estadoBadge {
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.estadoActivo {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border: 2px solid #10b981;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.estadoInactivo {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: 2px solid #ef4444;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.estadoSuspendido {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 2px solid #f59e0b;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+/* Estados específicos del componente */
+.estadoPendiente {
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 2px solid #f59e0b;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.estadoAprobado {
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border: 2px solid #10b981;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.estadoRechazado {
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: 2px solid #ef4444;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Botones de acción - adaptados al estilo del primer archivo */
+.editButton {
+    background-color: #fbf024;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.editButton:hover {
+    background-color: #e6d822;
+    transform: translateY(-1px);
+}
+
+.deleteButton {
+    background-color: #fb4824;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+    background-color: #e03e1f;
+    transform: translateY(-1px);
+}
+
+/* Backdrop del modal */
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Contenedor principal del modal */
+.modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    animation: slideIn 0.2s ease-out;
+}
+
+/* Header del modal */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e1e5e9;
+    background-color: #f8f9fa;
+}
+
+/* Título del modal */
+.titleModal {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+/* Botón de cerrar (X) */
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.closeButton:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Contenido del modal */
+.content {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+    color: #374151;
+    line-height: 1.6;
+    text-align: left;
+}
+
+/* Estilos para el formulario dentro del modal */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.select:hover {
+    border-color: #007bff;
+}
+
+/* Footer del modal */
+.footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e1e5e9;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Botones del footer */
+.buttonModal {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.buttonModal:hover {
+    background-color: #2563eb;
+}
+
+.buttonModal:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.cancelButton {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+    background-color: #4b5563;
+}
+
+.cancelButton:focus {
+    outline: 2px solid #6b7280;
+    outline-offset: 2px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tablecontainer {
+        padding: 15px;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+    .th,
+    .td {
+        padding: 12px 16px;
+    }
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .estadoPendiente,
+    .estadoAprobado,
+    .estadoRechazado,
+    .estadoBadge {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tablecontainer {
+        padding: 10px;
+    }
+
+    .th,
+    .td {
+        padding: 10px 12px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .modal {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .header,
+    .content,
+    .footer {
+        padding: 15px 20px;
+    }
+}

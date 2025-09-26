@@ -11,14 +11,14 @@ const Solicitud = ({ mostrar, onCerrar }) => {
             <div className={styles.modalContent}>
                 <div className={styles.modalHeader}>
                     <h2>Nueva Solicitud</h2>
-                    <button 
+                    <button
                         className={styles.closeButton}
                         onClick={onCerrar}
                     >
                         <FontAwesomeIcon icon={faTimes} />
                     </button>
                 </div>
-                
+
                 <div className={styles.modalBody}>
                     <div className={styles.formGroup}>
                         <label>Tipo de solicitud</label>

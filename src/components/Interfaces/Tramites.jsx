@@ -5,9 +5,9 @@ import Solicitud from './Solicitud';
 import styles from './Tramites.module.css';
 
 const Tramites = () => {
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  // Datos de ejemplo
+    // Datos de ejemplo
     const tramites = [
         {
         id: 1,
@@ -69,7 +69,7 @@ const Tramites = () => {
         <button className={styles.nuevaSolicitudButton} onClick={() => setMostrarFormulario(true)}>
             <FontAwesomeIcon icon={faPlus} /> Nueva Solicitud
         </button>
-        
+
         <table className={styles.table}>
             <thead className={styles.thead}>
             <tr>
@@ -99,9 +99,9 @@ const Tramites = () => {
             </tbody>
         </table>
 
-        <Solicitud 
-            mostrar={mostrarFormulario} 
-            onCerrar={() => setMostrarFormulario(false)} 
+        <Solicitud
+            mostrar={mostrarFormulario}
+            onCerrar={() => setMostrarFormulario(false)}
         />
         </div>
     );

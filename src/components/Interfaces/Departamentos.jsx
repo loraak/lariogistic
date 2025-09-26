@@ -7,27 +7,52 @@ import api from '../../services/api';
 const Departamentos = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [departamentos, setDepartamentos] = useState([]);
+    const [nombre, setNombre] = useState(""); 
+    const [descripcion, setDescripcion] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await getDepartamentos();
-                setDepartamentos(result.data); // Aquí ya guardas el array
+                setDepartamentos(result.data); 
             } catch (error) {
                 console.error(error);
             }
         };
         fetchData();
     }, []);
-    // Haz una llamada API
+
     const getDepartamentos = async () => {
         try {
-            const {data} = await api.get('/departamentos/'); // GET http://localhost:3000/api/departamentos
-            console.log('Departamentos:', data);
+            const {data} = await api.get('/departamentos/');
             return data;
         } catch (err) {
             console.error('Error obteniendo departamentos:', err);
             throw err;
+        }
+    };
+
+    const createDepartamento = async (nombre, descripcion) => {
+        try {
+            const { data } = await api.post("/departamentos/", { nombre, descripcion });
+            console.log("Departamento creado:", data);
+            return data;
+        } catch (err) {
+            console.error("Error creando departamento:", err);
+            throw err;
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+        await createDepartamento(nombre, descripcion);
+        setNombre("");
+        setDescripcion("");
+        setIsModalOpen(false);
+        window.location.reload()
+        } catch {
+        alert("Error al crear departamento");
         }
     };
 
@@ -70,7 +95,7 @@ const Departamentos = () => {
                                 </span>
                             </td>
                             <td className={styles.td}>
-                                <button onClick={setIsModalOpen}
+                                <button
                                 className={styles.editButton}>
                                     <FontAwesomeIcon icon={faPenToSquare} />
                                 </button>
@@ -79,20 +104,30 @@ const Departamentos = () => {
                     ))}
                 </tbody>
             </table>
-            <EditarSolicitud
+            <ModalCrearDepartamento
                 isOpen={isModalOpen}
                 onClose={() => {
                     setIsModalOpen(false);
                 }}
+                nombre={nombre}
+                descripcion={descripcion}
+                setNombre={setNombre}
+                setDescripcion={setDescripcion}
+                handleSubmit={handleSubmit}
             />
         </div>
     );
 }
 
-const EditarSolicitud = ({ 
-    isOpen, 
-    onClose, 
-}) => {
+const ModalCrearDepartamento = ({ 
+        isOpen, 
+        onClose,
+        nombre,
+        setNombre,
+        descripcion,
+        setDescripcion,
+        handleSubmit
+    }) => {
     if (!isOpen) return null;
 
     const handleBackdropClick = (e) => {
@@ -103,7 +138,7 @@ const EditarSolicitud = ({
 
     return (
         <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
+            <form onSubmit={handleSubmit} className={styles.modalContent}>
                 <div className={styles.modalHeader}>
                     <h2>Nuevo Departamento</h2>
                     <button
@@ -118,24 +153,23 @@ const EditarSolicitud = ({
                 <div className={styles.modalBody}>
                     <div className={styles.formGroup}>
                         <label>Nombre</label>
-                        <input type="text" className={styles.input} />
+                        <input type="text" className={styles.input}
+                        value={nombre} 
+                        onChange={(e) => setNombre(e.target.value)}/>
                     </div>
                     
                     <div className={styles.formGroup}>
                         <label>Descripcion</label>
-                        <input type="text" className={styles.input} />
+                        <input type="text" className={styles.input} 
+                        value={descripcion} 
+                        onChange={(e) => setDescripcion(e.target.value)}/>
                     </div>
                     
-                    <div className={styles.formGroup}>
-                        <label>Explique su motivo de solicitud</label>
-                        <textarea className={styles.textarea} rows="4"></textarea>
-                    </div>
-                    
-                    <button className={styles.solicitarButton}>
-                        Solicitar
+                    <button type="submit" className={styles.solicitarButton}>
+                        Crear
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

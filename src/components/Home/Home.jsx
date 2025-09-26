@@ -11,6 +11,7 @@ const Home = () => {
         <div className={styles.navLinks}>
           <Link to="/" className={styles.link}>Inicio</Link>
           <Link to="/gestiones" className={styles.link}>Gestiones</Link>
+          <Link to="/tramites" className={styles.link}>Solicitudes</Link>
         </div>
       </nav>
     </header>

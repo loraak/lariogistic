@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
+import Solicitud from './Solicitud';
 import styles from './Tramites.module.css';
 
 const Tramites = () => {
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
   // Datos de ejemplo
     const tramites = [
         {
@@ -63,7 +66,7 @@ const Tramites = () => {
     return (
         <div className={styles.tableContainer}>
         <h1 className={styles.title}>Gestión de Trámites</h1>
-        <button className={styles.nuevaSolicitudButton}>
+        <button className={styles.nuevaSolicitudButton} onClick={() => setMostrarFormulario(true)}>
             <FontAwesomeIcon icon={faPlus} /> Nueva Solicitud
         </button>
         
@@ -95,6 +98,11 @@ const Tramites = () => {
             ))}
             </tbody>
         </table>
+
+        <Solicitud 
+            mostrar={mostrarFormulario} 
+            onCerrar={() => setMostrarFormulario(false)} 
+        />
         </div>
     );
 };

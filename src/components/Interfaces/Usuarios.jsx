@@ -1,101 +1,112 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Usuarios.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import AñadirUsuario from './AñadirUsuario';
+import api from "../../services/api";
+
+// IMPORTAMOS EL NUEVO COMPONENTE
+import EditarUsuario from "./EditarUsuario"; 
 
 const Usuarios = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false); 
-    const [nuevoEstado, setNuevoEstado] = useState('');
-    const [datos, setDatos] = useState([
-        { 
-            id: 1,
-            nombre: "Ana García", 
-            email: "ana.garcia@empresa.com", 
-            telefono: "555-0001", 
-            direccion: "Av. Principal 123",
-            rol: "Administrador",
-            departamento: "Recursos Humanos",
-            estado: "Activo" 
-        },
-        { 
-            id: 2,
-            nombre: "Irving Chaparro", 
-            email: "irving.lopez@gmail.com", 
-            telefono: "1012-0002", 
-            direccion: "Calle Secundaria 456",
-            rol: "Empleado",
-            departamento: "Desarrollo",
-            estado: "Activo" 
-        },
-        { 
-            id: 3,
-            nombre: "Karol Arvizu", 
-            email: "karol.lorak@gmail.com", 
-            telefono: "442-3786", 
-            direccion: "Boulevard Central 789",
-            rol: "Supervisor",
-            departamento: "Ventas",
-            estado: "Inactivo" 
-        },
-    ]);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [datos, setDatos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const estadosDisponibles = ['Activo', 'Inactivo', 'Suspendido'];
+    const obtenerNombreRol = (idRol) => {
+        const roles = { 1: 'Administrador', 2: 'Supervisor', 3: 'Empleado' };
+        return roles[idRol] || 'Sin rol';
+    };
+
+    const obtenerUsuarios = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await api.get('/usuarios');
+            const usuariosTransformados = response.data.data.map(usuario => ({
+                id: usuario.idUsuario,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                telefono: usuario.telefono || 'No especificado',
+                direccion: usuario.direccion || 'No especificada',
+                rol: obtenerNombreRol(usuario.idRol),
+                departamento: 'No especificado',
+                estado: usuario.estado
+            }));
+            setDatos(usuariosTransformados);
+        } catch (err) {
+            console.error('Error al obtener usuarios:', err);
+            setError(err.response?.data?.error || 'Ocurrió un error al cargar los usuarios');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        obtenerUsuarios();
+    }, []);
 
     const abrirModal = (usuario) => {
         setUsuarioSeleccionado(usuario);
-        setNuevoEstado(usuario.estado);
         setIsModalOpen(true);
     };
 
     const cerrarModal = () => {
         setIsModalOpen(false);
         setUsuarioSeleccionado(null);
-        setNuevoEstado('');
     };
 
-    const actualizarEstado = () => {
-        if (usuarioSeleccionado && nuevoEstado) {
-            setDatos(prevDatos => 
-                prevDatos.map(item => 
-                    item.id === usuarioSeleccionado.id 
-                        ? { ...item, estado: nuevoEstado }
-                        : item
-                )
-            );
-            cerrarModal();
+    const eliminarUsuario = async (usuarioId) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+            try {
+                await api.delete(`/usuarios/${usuarioId}`);
+                setDatos(prevDatos => prevDatos.filter(item => item.id !== usuarioId));
+            } catch (err) {
+                console.error('Error al eliminar usuario:', err);
+                setError(err.response?.data?.error || 'No se pudo eliminar el usuario');
+            }
         }
     };
-
+    
     const getEstadoClassName = (estado) => {
         switch (estado.toLowerCase()) {
-            case 'activo':
-                return styles.estadoActivo;
-            case 'inactivo':
-                return styles.estadoInactivo;
-            case 'suspendido':
-                return styles.estadoSuspendido;
-            default:
-                return '';
+            case 'activo': return styles.estadoActivo;
+            case 'inactivo': return styles.estadoInactivo;
+            case 'suspendido': return styles.estadoSuspendido;
+            default: return '';
         }
     };
 
-    // Función para agregar nuevo usuario
-    const agregarUsuario = (nuevoUsuario) => {
-        const nuevoId = Math.max(...datos.map(u => u.id)) + 1;
-        setDatos(prevDatos => [...prevDatos, { ...nuevoUsuario, id: nuevoId }]);
-        setMostrarFormulario(false);
-    };
-
+    if (loading) { return <div className={styles.centeredMessage}>Cargando usuarios...</div>; }
+    if (error) {
+        return (
+            <div className={styles.centeredMessage}>
+                <p className={styles.errorMessage}>Error: {error}</p>
+                <button onClick={obtenerUsuarios} className={styles.actionButton}>
+                    Intentar nuevamente
+                </button>
+            </div>
+        );
+    }
+    
     return (
         <div className={styles.tablecontainer}>
             <h2 className={styles.title}>Gestión de Usuarios</h2>
-            <button className={styles.nuevaSoliButton} onClick={() => setMostrarFormulario(true)}>
-                <FontAwesomeIcon icon={faPlus} /> Nuevo Usuario
-            </button>
+            
+            <div className={styles.actionsContainer}>
+                <button className={styles.actionButton} onClick={() => setMostrarFormulario(true)}>
+                    <FontAwesomeIcon icon={faPlus} /> Nuevo Usuario
+                </button>
+                <button
+                    className={`${styles.actionButton} ${styles.secondary}`}
+                    onClick={obtenerUsuarios}
+                >
+                    <FontAwesomeIcon icon={faPenToSquare} /> Refrescar
+                </button>
+            </div>
             
             <table className={styles.table}>
                 <thead className={styles.thead}>
@@ -128,7 +139,10 @@ const Usuarios = () => {
                                 <button onClick={() => abrirModal(item)} className={styles.editButton}>
                                     <FontAwesomeIcon icon={faPenToSquare} />
                                 </button>
-                                <button className={styles.deleteButton}>
+                                <button
+                                    className={styles.deleteButton}
+                                    onClick={() => eliminarUsuario(item.id)}
+                                >
                                     <FontAwesomeIcon icon={faTrash} />
                                 </button>
                             </td>
@@ -137,96 +151,24 @@ const Usuarios = () => {
                 </tbody>
             </table>
 
-            {/* Modal para editar usuario */}
+            {datos.length === 0 && (
+                <div className={styles.centeredMessage}>
+                    No hay usuarios para mostrar
+                </div>
+            )}
+
             <EditarUsuario
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Cambiar Estado de Usuario"
+                onClose={cerrarModal}
                 usuario={usuarioSeleccionado}
-                nuevoEstado={nuevoEstado}
-                setNuevoEstado={setNuevoEstado}
-                estadosDisponibles={estadosDisponibles}
-                onAceptar={actualizarEstado}
+                onUsuarioActualizado={obtenerUsuarios}
             />
 
-            {/* Componente para añadir nuevo usuario - Movido fuera del modal */}
             <AñadirUsuario
                 mostrar={mostrarFormulario}
                 onCerrar={() => setMostrarFormulario(false)}
-                onAgregar={agregarUsuario}
+                onUsuarioCreado={obtenerUsuarios}
             />
-        </div>
-    );
-};
-
-const EditarUsuario = ({ 
-    isOpen, 
-    onClose, 
-    title, 
-    usuario, 
-    nuevoEstado, 
-    setNuevoEstado, 
-    estadosDisponibles, 
-    onAceptar
-}) => {
-    if (!isOpen) return null;
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
-
-    return (
-        <div className={styles.backdrop} onClick={handleBackdropClick}>
-            <div className={styles.modal}>
-                <div className={styles.header}>
-                    <h2 className={styles.titleModal}>{title}</h2>
-                    <button
-                        className={styles.closeButton}
-                        onClick={onClose}
-                        aria-label="Cerrar modal"
-                    >
-                        ×
-                    </button>
-                </div>
-                <div className={styles.content}>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>
-                            Usuario: <strong>{usuario?.nombre}</strong>
-                        </label>
-                        <label className={styles.label}>
-                            Email: <strong>{usuario?.email}</strong>
-                        </label>
-                        <label className={styles.label}>
-                            Departamento: <strong>{usuario?.departamento}</strong>
-                        </label>
-                        <label className={styles.label} htmlFor="estado-select">
-                            Nuevo Estado:
-                        </label>
-                        <select
-                            id="estado-select"
-                            className={styles.select}
-                            value={nuevoEstado}
-                            onChange={(e) => setNuevoEstado(e.target.value)}
-                        >
-                            {estadosDisponibles.map((estado) => (
-                                <option key={estado} value={estado}>
-                                    {estado}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-                <div className={styles.footer}>
-                    <button
-                        className={styles.buttonModal}
-                        onClick={onAceptar}
-                    >
-                        Aceptar
-                    </button>
-                </div>
-            </div>
         </div>
     );
 };

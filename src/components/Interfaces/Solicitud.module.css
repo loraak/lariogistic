@@ -1,5 +1,4 @@
 
-/* Modal */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -88,8 +87,6 @@
   width: 100%;
 }
 
-/* Estilos adicionales para el componente Solicitud */
-
 .errorMessage {
     background-color: #f8d7da;
     color: #721c24;
@@ -108,7 +105,7 @@
 .formGroup label:has(~ select[required])::after,
 .formGroup label:has(~ textarea[required])::after {
     content: " *";
-    color: #dc3545;
+    color: #221718;
 }
 
 .input:disabled,
@@ -130,7 +127,6 @@
     gap: 8px;
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -141,7 +137,7 @@
 }
 
 .solicitarButton:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: rgb(5, 38, 72);
 }
 
 .closeButton:disabled {

@@ -14,8 +14,7 @@ const EditarUsuario = ({ isOpen, onClose, usuario, onUsuarioActualizado }) => {
     const [error, setError] = useState('');
     const estadosDisponibles = ['activo', 'inactivo', 'suspendido'];
     const rolesDisponibles = [
-        { id: 1, nombre: 'Administrador' },
-        { id: 2, nombre: 'Supervisor' },
+        { id: 2, nombre: 'Gerente' },
         { id: 3, nombre: 'Empleado' },
     ];
 

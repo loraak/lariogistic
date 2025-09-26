@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import styles from './Tramites.module.css';
 
 const Tramites = () => {
@@ -68,6 +70,7 @@ const Tramites = () => {
                 <th className={styles.th}>Trámite</th>
                 <th className={styles.th}>Fecha de Solicitud</th>
                 <th className={styles.th}>Estado</th>
+                <th className={styles.th}>Acciones</th>
             </tr>
             </thead>
             <tbody className={styles.tbody}>
@@ -79,6 +82,11 @@ const Tramites = () => {
                     <span className={getEstadoClass(tramite.estado)}>
                     {tramite.estado}
                     </span>
+                </td>
+                <td className={styles.td}>
+                    <button className={styles.verButton}>
+                    <FontAwesomeIcon icon={faEye} />
+                    </button>
                 </td>
                 </tr>
             ))}

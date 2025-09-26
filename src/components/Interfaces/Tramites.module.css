@@ -1,3 +1,4 @@
+
 /* Contenedor principal */
 .tableContainer {
   padding: 20px;
@@ -13,7 +14,6 @@
   margin-bottom: 30px;
   font-size: 28px;
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Tabla principal */
@@ -70,6 +70,16 @@
   font-size: 15px;
   color: #4a5568;
   font-weight: 400;
+}
+
+/* Botón Ver */
+.verButton {
+  background-color: #fbbf24;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 /* Estados */
